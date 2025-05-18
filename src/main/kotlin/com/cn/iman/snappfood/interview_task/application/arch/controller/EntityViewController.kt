@@ -1,10 +1,17 @@
 package com.cn.iman.snappfood.interview_task.application.arch.controller
 
 import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.request.search.SearchRequest
+import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response.MessageResponse
 import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response.PageResponse
 import com.cn.iman.snappfood.interview_task.application.arch.entity.BaseEntity
 import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.parameters.RequestBody as OasRequestBody
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -14,76 +21,98 @@ abstract class EntityViewController<S : EntityService<*, T>, T : BaseEntity> {
     abstract var service: S
 
     @Operation(
-        summary = "Get an entity by id",
-        description = "Gets an entity by id. "
+        summary = "Get an entity by ID",
+        description = "Retrieve a single entity by its unique identifier."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Entity found and returned successfully",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = BaseEntity::class)
+                )]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Entity not found",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = MessageResponse::class)
+                )]
+            )
+        ]
     )
     @GetMapping("/{id}")
-    open fun getEntity(@PathVariable id: Long): ResponseEntity<T> {
+    open fun getEntity(
+        @Parameter(
+            description = "Unique identifier of the entity",
+            required = true,
+            schema = Schema(type = "integer", format = "int64")
+        )
+        @PathVariable id: Long
+    ): ResponseEntity<T> {
         val entity = service.getById(id)
         return ResponseEntity.ok(entity)
     }
 
     @Operation(
-        summary = "Get all entities by id",
-        description = "Gets all entities by id. "
+        summary = "List entities",
+        description = "Retrieve a list of entities, up to the specified count."
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "List of entities returned successfully",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(type = "array", implementation = BaseEntity::class)
+                )]
+            )
+        ]
     )
     @GetMapping
     open fun getAllEntities(
-        @RequestParam(required = false) count: Int = 1000
+        @Parameter(
+            description = "Maximum number of entities to return (default is 1000)",
+            required = false,
+            schema = Schema(type = "integer", defaultValue = "1000")
+        )
+        @RequestParam(required = false, defaultValue = "1000") count: Int
     ): ResponseEntity<List<T>> {
         return ResponseEntity.ok(service.findTop(count))
     }
 
     @Operation(
-        summary = "Search entities with advanced filtering and pagination",
+        summary = "Search entities with filters, sorting, and pagination",
         description = """
-        ## Advanced Search API
-        
-        Performs a paginated search with filtering and sorting capabilities.
-        Returns results in a standardized page response format.
-        
-        ### Features:
-        - **Filtering**: Apply multiple filters using logical AND conditions
-        - **Sorting**: Sort by multiple fields with ascending/descending direction
-        - **Pagination**: Control page size and number
-        - **Default behavior**: Returns top 10 entities when no request body provided
-        
-        ### Request Structure:
-        ```json
-        {
-          "filters": {
-            "expressions": [
-              {
-                "key": "fieldName",
-                "values": ["value1", "value2"]
-              }
-            ]
-          },
-          "sorts": [
-            {
-              "key": "fieldName",
-              "direction": true // true=ascending, false=descending
-            }
-          ],
-          "page": {
-            "number": 0, // page index (0-based)
-            "size": 20   // items per page
-          }
-        }
-        ```
-        
-        ### Filter Behavior:
-        - Each expression creates an `IN` clause (field IN [values])
-        - Multiple expressions are combined with AND logic
-        - Omit filters to disable filtering
-        
-        ### Sorting:
-        - Supports multiple sort fields
-        - Direction: `true` = ascending, `false` = descending
-    """
+            Perform an advanced search over entities using filter expressions, multi-field sorting, and pagination. 
+            When no request body is provided, returns the top 10 entities in a default page response.
+        """
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Search results returned in paginated format",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = PageResponse::class)
+                )]
+            )
+        ]
     )
     @PostMapping("/search")
-    open fun getEntities(@RequestBody request: SearchRequest?): ResponseEntity<*> {
+    open fun getEntities(
+        @OasRequestBody(
+            description = "Optional search request detailing filters, sorts, and pagination",
+            required = false,
+            content = [Content(schema = Schema(implementation = SearchRequest::class))]
+        )
+        @RequestBody request: SearchRequest?
+    ): ResponseEntity<*> {
         if (request != null) {
             val pageable = if (!request.sorts.isNullOrEmpty()) {
                 val sort = Sort.by(
@@ -101,11 +130,18 @@ abstract class EntityViewController<S : EntityService<*, T>, T : BaseEntity> {
                     content = entities.content,
                     pageNumber = request.page.number,
                     pageSize = request.page.size,
-                    totalElements = 0,
+                    totalElements = entities.totalElements
                 )
             )
         } else {
-            return ResponseEntity.ok(PageResponse(service.findTop(10), 0, 10, 20))
+            return ResponseEntity.ok(
+                PageResponse(
+                    content = service.findTop(10),
+                    pageNumber = 0,
+                    pageSize = 10,
+                    totalElements = service.findTop(10).size.toLong()
+                )
+            )
         }
     }
 }
