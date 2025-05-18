@@ -16,7 +16,7 @@ abstract class EntityCrudController<S : EntityService<*, T>, T : BaseEntity> : E
 
     @Operation(
         summary = "Create a new entity",
-        description = "Creates a new entity. Requires ADMIN role."
+        description = "Creates a new entity. "
     )
     @PostMapping("/create")
     open fun create(@RequestBody dto: T): ResponseEntity<T> {
@@ -25,7 +25,7 @@ abstract class EntityCrudController<S : EntityService<*, T>, T : BaseEntity> : E
 
     @Operation(
         summary = "Update an existing entity",
-        description = "Updates an existing entity. Requires ADMIN role."
+        description = "Updates an existing entity. "
     )
     @PutMapping("/update")
     open fun update(@RequestBody dto: T): ResponseEntity<T> {
@@ -34,7 +34,7 @@ abstract class EntityCrudController<S : EntityService<*, T>, T : BaseEntity> : E
 
     @Operation(
         summary = "Archive an entity",
-        description = "Archives an entity by ID. Requires ADMIN role."
+        description = "Archives an entity by ID. "
     )
     @DeleteMapping("delete/{id}")
     open fun delete(@PathVariable id: Long): ResponseEntity<MessageResponse> {

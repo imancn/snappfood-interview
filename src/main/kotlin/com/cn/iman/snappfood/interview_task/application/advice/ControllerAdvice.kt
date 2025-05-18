@@ -52,7 +52,6 @@ class ControllerAdvice {
         )
     }
 
-    // Todo: Remove after test
     @ExceptionHandler(value = [HttpMessageConversionException::class])
     fun handleHttpMessageConversionException(
         ex: HttpMessageNotReadableException,

@@ -15,12 +15,23 @@ abstract class EntityViewController<S : EntityService<*, T>, T : BaseEntity> {
 
     @Operation(
         summary = "Get an entity by id",
-        description = "Gets an entity by id. Requires ADMIN role."
+        description = "Gets an entity by id. "
     )
     @GetMapping("/{id}")
     open fun getEntity(@PathVariable id: Long): ResponseEntity<T> {
         val entity = service.getById(id)
         return ResponseEntity.ok(entity)
+    }
+
+    @Operation(
+        summary = "Get all entities by id",
+        description = "Gets all entities by id. "
+    )
+    @GetMapping
+    open fun getAllEntities(
+        @RequestParam(required = false) count: Int = 1000
+    ): ResponseEntity<List<T>> {
+        return ResponseEntity.ok(service.findTop(count))
     }
 
     @Operation(
