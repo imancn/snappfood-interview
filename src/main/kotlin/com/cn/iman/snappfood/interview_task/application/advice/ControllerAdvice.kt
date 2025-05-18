@@ -1,6 +1,7 @@
 package com.cn.iman.snappfood.interview_task.application.advice
 
 import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response.MessageResponse
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.validation.ValidationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 
+@Hidden
 @RestControllerAdvice
 class ControllerAdvice {
 
