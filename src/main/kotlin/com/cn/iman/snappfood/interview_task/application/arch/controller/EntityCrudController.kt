@@ -1,15 +1,15 @@
 package com.cn.iman.snappfood.interview_task.application.arch.controller
 
-import com.cn.iman.snappfood.interview_task.application.services.BundleService
+import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response.MessageResponse
 import com.cn.iman.snappfood.interview_task.application.arch.entity.BaseEntity
 import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
-import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response.MessageResponse
+import com.cn.iman.snappfood.interview_task.application.services.BundleService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-abstract class EntityCrudController<S: EntityService<*, T>, T: BaseEntity>: EntityViewController<S, T>() {
+abstract class EntityCrudController<S : EntityService<*, T>, T : BaseEntity> : EntityViewController<S, T>() {
 
     @Autowired
     private lateinit var bundle: BundleService

@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class InterviewTaskApplication
 
 fun main(args: Array<String>) {
-	runApplication<InterviewTaskApplication>(*args)
+    runApplication<InterviewTaskApplication>(*args)
 }

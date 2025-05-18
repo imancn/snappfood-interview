@@ -1,7 +1,6 @@
 package com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response
 
 import com.cn.iman.snappfood.interview_task.application.advice.UnprocessableException
-import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.request.search.PageRequest
 import org.springframework.data.domain.Page
 
 data class PageResponse<T>(

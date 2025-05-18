@@ -2,9 +2,9 @@ package com.cn.iman.snappfood.interview_task.application.arch.controller.payload
 
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.PageRequest as SpringPageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.data.domain.PageRequest as SpringPageRequest
 
 data class SearchRequest(
     val filters: FilterRequest? = null,

@@ -18,6 +18,7 @@ import org.springframework.web.context.request.WebRequest
 class ControllerAdvice {
 
     private val logger = LoggerFactory.getLogger(javaClass.simpleName)
+
     @ExceptionHandler(value = [MethodArgumentNotValidException::class])
     fun handleValidationException(
         ex: MethodArgumentNotValidException,

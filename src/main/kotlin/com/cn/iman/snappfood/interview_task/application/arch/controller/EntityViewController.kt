@@ -1,9 +1,9 @@
 package com.cn.iman.snappfood.interview_task.application.arch.controller
 
-import com.cn.iman.snappfood.interview_task.application.arch.entity.BaseEntity
-import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.request.search.SearchRequest
 import com.cn.iman.snappfood.interview_task.application.arch.controller.payload.response.PageResponse
+import com.cn.iman.snappfood.interview_task.application.arch.entity.BaseEntity
+import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
