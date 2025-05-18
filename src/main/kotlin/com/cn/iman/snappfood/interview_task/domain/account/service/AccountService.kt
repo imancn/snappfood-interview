@@ -25,7 +25,7 @@ class AccountService(
     }
 
     override fun getBySheba(sheba: String): AccountEntity {
-        return repository.findBySheba(sheba)
+        return repository.findByShebaNumber(sheba)
             ?: throw NotFoundException("Entity with sheba number $sheba not found")
     }
 

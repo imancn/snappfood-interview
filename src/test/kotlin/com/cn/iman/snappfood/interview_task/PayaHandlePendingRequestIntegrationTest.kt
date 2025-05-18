@@ -65,14 +65,14 @@ class PayaHandlePendingRequestIntegrationTest {
         // Create source and destination accounts
         fromAccount = accountRepository.save(
             AccountEntity(
-                sheba = "IR000000000000000000000001",
+                shebaNumber = "IR000000000000000000000001",
                 balance = 1000L,
                 reserved = 0L
             )
         )
         toAccount = accountRepository.save(
             AccountEntity(
-                sheba = "IR000000000000000000000002",
+                shebaNumber = "IR000000000000000000000002",
                 balance = 500L,
                 reserved = 0L
             )
@@ -88,8 +88,8 @@ class PayaHandlePendingRequestIntegrationTest {
         request = transferRequestRepository.save(
             TransferRequestEntity(
                 price = amount,
-                fromShebaNumber = fromAccount.sheba,
-                toShebaNumber = toAccount.sheba,
+                fromShebaNumber = fromAccount.shebaNumber,
+                toShebaNumber = toAccount.shebaNumber,
                 status = TransferRequestEntity.TransferStatus.PENDING
             )
         )
@@ -187,8 +187,8 @@ class PayaHandlePendingRequestIntegrationTest {
         val req = transferRequestRepository.save(
             TransferRequestEntity(
                 price = 300,
-                fromShebaNumber = from.sheba,
-                toShebaNumber   = to.sheba,
+                fromShebaNumber = from.shebaNumber,
+                toShebaNumber   = to.shebaNumber,
                 status = TransferRequestEntity.TransferStatus.PENDING,
             )
         )

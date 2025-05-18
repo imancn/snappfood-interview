@@ -12,5 +12,5 @@ interface AccountRepository : Repository<AccountEntity> {
     @Query("SELECT a FROM AccountEntity a WHERE a.id = :accountId")
     fun findByIdForUpdate(@Param("accountId") accountId: Long): AccountEntity
 
-    fun findBySheba(sheba: String): AccountEntity?
+    fun findByShebaNumber(sheba: String): AccountEntity?
 }

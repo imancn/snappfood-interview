@@ -48,12 +48,12 @@ class PayaTransferRequestControllerIntegrationTest {
 
         // insert test accounts
         val fromAccount = AccountEntity(
-            sheba    = validFromIban,
+            shebaNumber    = validFromIban,
             balance  = 1_000_000L,
             reserved = 0L
         )
         val toAccount = AccountEntity(
-            sheba    = validToIban,
+            shebaNumber    = validToIban,
             balance  = 500_000L,
             reserved = 0L
         )
@@ -82,7 +82,7 @@ class PayaTransferRequestControllerIntegrationTest {
             .andExpect(jsonPath("$.request.status").value("PENDING"))
 
         // verify account balances
-        val fromAcc = accountRepository.findBySheba(validFromIban)!!
+        val fromAcc = accountRepository.findByShebaNumber(validFromIban)!!
         assert(fromAcc.balance == 800_000L)
         assert(fromAcc.reserved == 200_000L)
     }

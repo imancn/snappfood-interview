@@ -18,15 +18,15 @@ class DataGenerator(
 
         val initialAccounts = listOf(
             AccountEntity(
-                sheba = "IR000000000000000000000001",
+                shebaNumber = "IR000000000000000000000001",
                 balance = 1_000_000L
             ),
             AccountEntity(
-                sheba = "IR000000000000000000000002",
+                shebaNumber = "IR000000000000000000000002",
                 balance = 2_000_000L
             ),
             AccountEntity(
-                sheba = "IR000000000000000000000003",
+                shebaNumber = "IR000000000000000000000003",
                 balance = 5_000_000L
             )
         )
