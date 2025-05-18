@@ -19,11 +19,11 @@ class TransactionService(
      * We record this as a negative‐amount entry.
      */
     @Transactional(
-        propagation = Propagation.MANDATORY,
+        propagation = Propagation.REQUIRED,
         isolation = Isolation.READ_COMMITTED,
         timeout = 5
     )
-    override fun recordDeduction(accountId: String, amount: Long) {
+    override fun recordDeduction(accountId: Long, amount: Long) {
         val tx = TransactionEntity(
             fromAccountId = accountId,
             toAccountId = accountId,   // self‐transfer to show funds reserved
@@ -37,11 +37,11 @@ class TransactionService(
      * money movement between two accounts as a positive‐amount entry.
      */
     @Transactional(
-        propagation = Propagation.MANDATORY,
+        propagation = Propagation.REQUIRED,
         isolation = Isolation.READ_COMMITTED,
         timeout = 5
     )
-    override fun recordPayment(from: String, to: String, amount: Long) {
+    override fun recordPayment(from: Long, to: Long, amount: Long) {
         val tx = TransactionEntity(
             fromAccountId = from,
             toAccountId = to,

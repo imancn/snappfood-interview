@@ -1,5 +1,6 @@
 package com.cn.iman.snappfood.interview_task.domain.account.service
 
+import com.cn.iman.snappfood.interview_task.application.advice.NotFoundException
 import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import com.cn.iman.snappfood.interview_task.domain.account.data.AccountEntity
 import com.cn.iman.snappfood.interview_task.domain.account.data.AccountRepository
@@ -25,14 +26,14 @@ class AccountService(
 
     override fun getBySheba(sheba: String): AccountEntity {
         return repository.findBySheba(sheba)
-            ?: throw NoSuchElementException("Entity with sheba number $sheba not found")
+            ?: throw NotFoundException("Entity with sheba number $sheba not found")
     }
 
     /**
      * Reserve funds: deduct from available balance, increase reserved.
      */
     @Transactional(
-        propagation = Propagation.MANDATORY,
+        propagation = Propagation.REQUIRED,
         isolation = Isolation.READ_COMMITTED,
         timeout = 5
     )
@@ -49,7 +50,7 @@ class AccountService(
      * On cancellation: return reserved funds to available.
      */
     @Transactional(
-        propagation = Propagation.MANDATORY,
+        propagation = Propagation.REQUIRED,
         isolation = Isolation.READ_COMMITTED,
         timeout = 5
     )

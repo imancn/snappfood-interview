@@ -52,6 +52,14 @@ class ControllerAdviceHttp(
         )
     }
 
+    @ExceptionHandler(value = [NotFoundException::class])
+    fun handleNotFoundException(ex: NotFoundException, request: WebRequest): ResponseEntity<MessageResponse> {
+        logger.error(getMessage(ex))
+        return ResponseEntity(
+            bundleService.getMessageResponse(ex.key, *ex.args), ex.httpStatus
+        )
+    }
+
     @ExceptionHandler(value = [UnprocessableException::class])
     fun handleUnprocessableEntityException(
         ex: UnprocessableException,

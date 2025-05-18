@@ -1,6 +1,7 @@
 package com.cn.iman.snappfood.interview_task.domain.transfer.service
 
 import com.cn.iman.snappfood.interview_task.application.advice.InvalidInputException
+import com.cn.iman.snappfood.interview_task.application.advice.NotFoundException
 import com.cn.iman.snappfood.interview_task.application.advice.UnprocessableException
 import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import com.cn.iman.snappfood.interview_task.domain.account.service.AccountService
@@ -34,13 +35,13 @@ class TransferRequestService(
             throw InvalidInputException("invalid.input", "Invalid IBAN format")
         }
         val fromAccount = transferAccountServiceInterface.getBySheba(dto.fromShebaNumber)
-        run { transferAccountServiceInterface.getBySheba(dto.fromShebaNumber) }
+        val toAccount = transferAccountServiceInterface.getBySheba(dto.toShebaNumber)
         val locked = transferAccountServiceInterface.lockBalance(fromAccount.id(), dto.price)
         if (!locked) {
-            throw UnprocessableException("insufficient.funds")
+            throw UnprocessableException("insufficient.balance")
         }
         transferTransactionServiceInterface.recordDeduction(
-            dto.fromShebaNumber,
+            fromAccount.id(),
             dto.price
         )
         val requestEntity = TransferRequestEntity(
@@ -62,7 +63,7 @@ class TransferRequestService(
         rollbackFor = [Exception::class]
     )
     fun handlePendingRequest(dto: HandlePendingRequestDto, id: Long): ShebaResponse<TransferRequestResponseDto> {
-        val request = repository.findByIdForUpdate(id).orElseThrow { InvalidInputException("Request not found") }
+        val request = repository.findByIdForUpdate(id).orElseThrow { NotFoundException("Request not found") }
         if (request.status != TransferRequestEntity.TransferStatus.PENDING) {
             throw UnprocessableException("request.already.handled", id.toString())
         }
@@ -81,8 +82,8 @@ class TransferRequestService(
                 )
 
                 transferTransactionServiceInterface.recordPayment(
-                    request.fromShebaNumber,
-                    request.toShebaNumber,
+                    fromAccount.id(),
+                    toAccount.id(),
                     request.price
                 )
 
@@ -93,12 +94,6 @@ class TransferRequestService(
                 val fromAccount = transferAccountServiceInterface.getBySheba(request.fromShebaNumber)
                 transferAccountServiceInterface.unlockBalance(
                     fromAccount.id(),
-                    request.price
-                )
-
-                transferTransactionServiceInterface.recordPayment(
-                    request.toShebaNumber,
-                    request.fromShebaNumber,
                     request.price
                 )
 

@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "transactions")
 data class TransactionEntity(
-    val fromAccountId: String,
-    val toAccountId: String,
+    val fromAccountId: Long,
+    val toAccountId: Long,
     val amount: Long
 ) : BaseEntity()

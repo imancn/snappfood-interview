@@ -18,3 +18,6 @@ class UnprocessableException(key: String = "unprocessable", vararg args: Any) :
 
 class InternalServerError(key: String = "internal.server.error", vararg args: Any) :
     HttpException(HttpStatus.INTERNAL_SERVER_ERROR, key, args.map { it.toString() }.toTypedArray())
+
+class NotFoundException(key: String = "not.found", vararg args: Any) :
+    HttpException(HttpStatus.NOT_FOUND, key, args.map { it.toString() }.toTypedArray())
