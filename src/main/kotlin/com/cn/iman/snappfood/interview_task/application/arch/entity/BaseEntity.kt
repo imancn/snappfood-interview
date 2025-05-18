@@ -16,17 +16,9 @@ abstract class BaseEntity(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var version: Long = 0
 
-    @field:CreatedBy
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var createdBy: Long? = null
-
     @field:CreatedDate
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var createdAt: Date? = null
-
-    @field:LastModifiedBy
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    var updatedBy: Long? = null
 
     @field:LastModifiedDate
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

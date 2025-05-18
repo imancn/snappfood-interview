@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-abstract class HistoricalEntityViewController<S : EntityService<*, T>, T : BaseEntity> {
-    protected open lateinit var service: S
+abstract class EntityViewController<S : EntityService<*, T>, T : BaseEntity> {
+    abstract var service: S
 
     @Operation(
         summary = "Get an entity by id",
