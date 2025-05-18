@@ -3,6 +3,7 @@ package com.cn.iman.snappfood.interview_task.domain.account.service
 import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import com.cn.iman.snappfood.interview_task.domain.account.data.AccountEntity
 import com.cn.iman.snappfood.interview_task.domain.account.data.AccountRepository
+import com.cn.iman.snappfood.interview_task.domain.transfer.service.external.TransferAccountServiceInterface
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
@@ -12,7 +13,7 @@ import java.util.regex.Pattern
 @Service
 class AccountService(
     override var repository: AccountRepository,
-) : EntityService<AccountRepository, AccountEntity>() {
+) : EntityService<AccountRepository, AccountEntity>(), TransferAccountServiceInterface {
 
     companion object {
         private val IBAN_PATTERN = Pattern.compile("^IR\\d{24}$")

@@ -3,6 +3,7 @@ package com.cn.iman.snappfood.interview_task.domain.transactions.service
 import com.cn.iman.snappfood.interview_task.application.arch.services.EntityService
 import com.cn.iman.snappfood.interview_task.domain.transactions.data.TransactionEntity
 import com.cn.iman.snappfood.interview_task.domain.transactions.data.TransactionRepository
+import com.cn.iman.snappfood.interview_task.domain.transfer.service.external.TransferTransactionServiceInterface
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TransactionService(
     override var repository: TransactionRepository,
-) : EntityService<TransactionRepository, TransactionEntity>() {
+) : EntityService<TransactionRepository, TransactionEntity>(), TransferTransactionServiceInterface {
 
     /**
      * When a transfer is initiated, log a deduction (debit) in the user’s ledger.
