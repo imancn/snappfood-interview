@@ -24,15 +24,6 @@ abstract class EntityViewController<S : EntityService<*, T>, T : BaseEntity> {
     }
 
     @Operation(
-        summary = "Get 10 latest created entities",
-        description = "Gets 10 latest created entities. Requires ADMIN role."
-    )
-    @GetMapping
-    open fun getTop(@RequestParam count: Int = 10): ResponseEntity<List<T>> {
-        return ResponseEntity.ok(service.findTop(count))
-    }
-
-    @Operation(
         summary = "Search entities with advanced filtering and pagination",
         description = """
         ## Advanced Search API
